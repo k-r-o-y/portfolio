@@ -2,6 +2,9 @@ import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Experience from "@/components/sections/Experience";
+import SelectedWork from "@/components/sections/SelectedWork";
+import Research from "@/components/sections/Research";
+import Contact from "@/components/sections/Contact";
 
 export default function Home() {
   return (
@@ -9,30 +12,11 @@ export default function Home() {
       <Navbar />
 
       <Hero />
-
       <About />
-
       <Experience />
-
-      {/*
-        Temporary anchors.
-        These will be replaced by the actual sections next.
-      */}
-
-      <section className="placeholder-section" id="work">
-        <span>03</span>
-        <p>Selected Work</p>
-      </section>
-
-      <section className="placeholder-section" id="research">
-        <span>04</span>
-        <p>Research</p>
-      </section>
-
-      <section className="placeholder-section" id="contact">
-        <span>05</span>
-        <p>Contact</p>
-      </section>
+      <SelectedWork />
+      <Research />
+      <Contact />
     </main>
   );
 }
