@@ -1,25 +1,23 @@
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
+import Experience from "@/components/sections/Experience";
 
 export default function Home() {
   return (
     <main>
       <Navbar />
+
       <Hero />
 
-      {/*
-        Temporary anchor sections.
-        We'll replace these with the real portfolio sections next.
-      */}
-      <section className="placeholder-section" id="about">
-        <span>01</span>
-        <p>About</p>
-      </section>
+      <About />
 
-      <section className="placeholder-section" id="experience">
-        <span>02</span>
-        <p>Experience</p>
-      </section>
+      <Experience />
+
+      {/*
+        Temporary anchors.
+        These will be replaced by the actual sections next.
+      */}
 
       <section className="placeholder-section" id="work">
         <span>03</span>
