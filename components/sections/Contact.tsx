@@ -124,40 +124,46 @@ export default function Contact() {
             </a>
 
             <div className="contact-links">
+            <a
+  href="https://github.com/k-r-o-y"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Visit Kanishka Roy on GitHub"
+>
+  <div>
+    <GitHubIcon />
+    <span>GitHub</span>
+  </div>
+
+  <ArrowUpRight size={16} />
+</a>
+
+<a
+  href="https://www.linkedin.com/in/kanishka-roy-64815319b"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Visit Kanishka Roy on LinkedIn"
+>
+  <div>
+    <LinkedInIcon />
+    <span>LinkedIn</span>
+  </div>
+
+  <ArrowUpRight size={16} />
+</a>
+
               <a
-                href="https://github.com/k-r-o-y"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div>
-                  <GitHubIcon />
-                  <span>GitHub</span>
-                </div>
+  href="/kanishka-roy-cv.pdf"
+  target="_blank"
+  rel="noreferrer"
+>
+  <div>
+    <Download size={18} strokeWidth={1.5} />
+    <span>Résumé / CV</span>
+  </div>
 
-                <ArrowUpRight size={16} />
-              </a>
-
-              <a
-                href="https://www.linkedin.com/in/kanishka-roy-64815319b"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div>
-                  <LinkedInIcon />
-                  <span>LinkedIn</span>
-                </div>
-
-                <ArrowUpRight size={16} />
-              </a>
-
-              <a href="/kanishka-roy-cv.pdf">
-                <div>
-                  <Download size={18} strokeWidth={1.5} />
-                  <span>Résumé / CV</span>
-                </div>
-
-                <ArrowRight size={16} />
-              </a>
+  <ArrowRight size={16} />
+</a>
             </div>
 
             <div className="contact-location">

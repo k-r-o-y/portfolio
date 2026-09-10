@@ -111,10 +111,15 @@ export default function Hero() {
               <ArrowRight size={17} />
             </a>
 
-            <a className="button button-secondary" href="/kanishka-roy-cv.pdf">
-              <Download size={16} />
-              Download CV
-            </a>
+            <a
+  className="button button-secondary"
+  href="/kanishka-roy-cv.pdf"
+  target="_blank"
+  rel="noreferrer"
+>
+  <Download size={16} />
+  View CV
+</a>
           </motion.div>
 
           <motion.div

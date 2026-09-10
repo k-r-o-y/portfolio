@@ -2,7 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight, Menu, Moon, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import ThemeToggle from "@/components/ui/ThemeToggle";
+
+/* =========================================================
+   TYPES
+   ========================================================= */
+
+type SectionId =
+  | "about"
+  | "experience"
+  | "work"
+  | "research"
+  | "contact";
 
 /* =========================================================
    BRAND ICONS
@@ -40,16 +52,53 @@ function LinkedInIcon({ size = 17 }: { size?: number }) {
    NAVIGATION
    ========================================================= */
 
-const links = [
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Work", href: "#work" },
-  { label: "Research", href: "#research" },
+const links: {
+  label: string;
+  href: `#${SectionId}`;
+  id: SectionId;
+}[] = [
+  {
+    label: "About",
+    href: "#about",
+    id: "about",
+  },
+  {
+    label: "Experience",
+    href: "#experience",
+    id: "experience",
+  },
+  {
+    label: "Work",
+    href: "#work",
+    id: "work",
+  },
+  {
+    label: "Research",
+    href: "#research",
+    id: "research",
+  },
+  {
+    label: "Contact",
+    href: "#contact",
+    id: "contact",
+  },
 ];
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const [activeSection, setActiveSection] =
+    useState<SectionId | null>(null);
+
+  /* =======================================================
+     NAVBAR SCROLL STATE
+     ======================================================= */
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,17 +107,195 @@ export default function Navbar() {
 
     handleScroll();
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
+  /* =======================================================
+     ACTIVE SECTION TRACKING
+     ======================================================= */
+
+  useEffect(() => {
+    const sectionElements = links
+      .map((link) => document.getElementById(link.id))
+      .filter((section): section is HTMLElement => Boolean(section));
+
+    if (sectionElements.length === 0) {
+      return;
+    }
+
+    /*
+     * Rather than simply checking whether a section is somewhere
+     * inside the viewport, we use a reference line roughly one
+     * quarter of the way down the screen.
+     *
+     * The section crossing this line becomes the active section.
+     * This tends to feel more natural with a fixed navigation bar.
+     */
+
+    const updateActiveSection = () => {
+      const navHeight = 90;
+
+      const activationPoint =
+        window.scrollY +
+        navHeight +
+        Math.min(window.innerHeight * 0.24, 220);
+
+      /*
+       * Before the visitor reaches About, no section is highlighted.
+       */
+
+      const firstSection = sectionElements[0];
+
+      if (activationPoint < firstSection.offsetTop) {
+        setActiveSection(null);
+        return;
+      }
+
+      /*
+       * Find the last section whose top has crossed our activation
+       * point.
+       */
+
+      let currentSection: SectionId | null = null;
+
+      for (const section of sectionElements) {
+        if (activationPoint >= section.offsetTop) {
+          currentSection = section.id as SectionId;
+        }
+      }
+
+      /*
+       * At the very bottom of the document, force Contact active.
+       * This avoids edge cases caused by a short final section.
+       */
+
+      const bottomReached =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 8;
+
+      if (bottomReached) {
+        currentSection = "contact";
+      }
+
+      setActiveSection(currentSection);
+    };
+
+    updateActiveSection();
+
+    window.addEventListener("scroll", updateActiveSection, {
+      passive: true,
+    });
+
+    window.addEventListener("resize", updateActiveSection);
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+    };
+  }, []);
+
+  /* =======================================================
+     CLOSE MOBILE MENU WITH ESCAPE
+     ======================================================= */
+
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [menuOpen]);
+
+  /* =======================================================
+     CLOSE MOBILE MENU WHEN RETURNING TO DESKTOP
+     ======================================================= */
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 820) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  /* =======================================================
+     MOBILE MENU SCROLL LOCK
+     ======================================================= */
+
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+
+    /*
+     * Only lock the page on narrow/mobile screens.
+     */
+
+    if (window.innerWidth <= 820) {
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [menuOpen]);
+
+  /* =======================================================
+     SECTION LINK HANDLER
+     ======================================================= */
+
+  const handleSectionClick = (id: SectionId) => {
+    setActiveSection(id);
+    setMenuOpen(false);
+  };
+
+  /* =======================================================
+     BRAND CLICK
+     ======================================================= */
+
+  const handleBrandClick = () => {
+    setActiveSection(null);
+    setMenuOpen(false);
+  };
+
+  /* =======================================================
+     RENDER
+     ======================================================= */
+
   return (
     <motion.header
-      initial={{ y: -30, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
+      initial={{
+        y: -30,
+        opacity: 0,
+      }}
+      animate={{
+        y: 0,
+        opacity: 1,
+      }}
       transition={{
         duration: 0.7,
         ease: [0.22, 1, 0.36, 1],
@@ -80,7 +307,12 @@ export default function Navbar() {
             BRAND
             ================================================= */}
 
-        <a className="brand" href="#top" aria-label="Kanishka Roy home">
+        <a
+          className="brand"
+          href="#top"
+          aria-label="Kanishka Roy home"
+          onClick={handleBrandClick}
+        >
           KR<span>.</span>
         </a>
 
@@ -88,12 +320,25 @@ export default function Navbar() {
             DESKTOP NAVIGATION
             ================================================= */}
 
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          {links.map((link) => (
-            <a key={link.label} href={link.href}>
-              {link.label}
-            </a>
-          ))}
+        <nav
+          className="desktop-nav"
+          aria-label="Primary navigation"
+        >
+          {links.map((link) => {
+            const isActive = activeSection === link.id;
+
+            return (
+              <a
+                key={link.id}
+                href={link.href}
+                className={isActive ? "nav-link-active" : undefined}
+                aria-current={isActive ? "location" : undefined}
+                onClick={() => handleSectionClick(link.id)}
+              >
+                {link.label}
+              </a>
+            );
+          })}
         </nav>
 
         {/* =================================================
@@ -101,37 +346,49 @@ export default function Navbar() {
             ================================================= */}
 
         <div className="nav-actions">
+          {/* GitHub */}
+
           <a
             className="nav-icon desktop-only"
-            href="https://github.com/kroyyc"
+            href="https://github.com/k-r-o-y"
             target="_blank"
-            rel="noreferrer"
-            aria-label="GitHub"
+            rel="noopener noreferrer"
+            aria-label="Visit Kanishka Roy on GitHub"
+            title="GitHub"
           >
             <GitHubIcon size={17} />
           </a>
+
+          {/* LinkedIn */}
 
           <a
             className="nav-icon desktop-only"
             href="https://www.linkedin.com/in/kanishka-roy-64815319b"
             target="_blank"
-            rel="noreferrer"
-            aria-label="LinkedIn"
+            rel="noopener noreferrer"
+            aria-label="Visit Kanishka Roy on LinkedIn"
+            title="LinkedIn"
           >
             <LinkedInIcon size={17} />
           </a>
 
-          <button
-            className="nav-icon desktop-only"
-            type="button"
-            aria-label="Theme selector coming soon"
-            title="Theme selector coming soon"
-          >
-            <Moon size={17} />
-          </button>
+          {/* Theme */}
 
-          <a className="nav-contact desktop-only" href="#contact">
+          <ThemeToggle />
+
+          {/* Contact CTA */}
+
+          <a
+            className={`nav-contact desktop-only ${
+              activeSection === "contact"
+                ? "nav-contact-active"
+                : ""
+            }`}
+            href="#contact"
+            onClick={() => handleSectionClick("contact")}
+          >
             Contact
+
             <ArrowUpRight size={15} />
           </a>
 
@@ -141,12 +398,71 @@ export default function Navbar() {
 
           <button
             className="mobile-menu-button"
-            onClick={() => setMenuOpen((current) => !current)}
-            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            onClick={() =>
+              setMenuOpen((current) => !current)
+            }
+            aria-label={
+              menuOpen
+                ? "Close navigation"
+                : "Open navigation"
+            }
             aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
             type="button"
           >
-            {menuOpen ? <X size={21} /> : <Menu size={21} />}
+            <AnimatePresence mode="wait" initial={false}>
+              {menuOpen ? (
+                <motion.span
+                  key="close"
+                  initial={{
+                    opacity: 0,
+                    rotate: -45,
+                    scale: 0.8,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    rotate: 0,
+                    scale: 1,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    rotate: 45,
+                    scale: 0.8,
+                  }}
+                  transition={{
+                    duration: 0.16,
+                  }}
+                  className="mobile-menu-icon"
+                >
+                  <X size={21} />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="menu"
+                  initial={{
+                    opacity: 0,
+                    rotate: 45,
+                    scale: 0.8,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    rotate: 0,
+                    scale: 1,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    rotate: -45,
+                    scale: 0.8,
+                  }}
+                  transition={{
+                    duration: 0.16,
+                  }}
+                  className="mobile-menu-icon"
+                >
+                  <Menu size={21} />
+                </motion.span>
+              )}
+            </AnimatePresence>
           </button>
         </div>
       </div>
@@ -158,6 +474,7 @@ export default function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
+            id="mobile-navigation"
             className="mobile-nav"
             initial={{
               opacity: 0,
@@ -172,48 +489,96 @@ export default function Navbar() {
               y: -12,
             }}
             transition={{
-              duration: 0.2,
+              duration: 0.22,
+              ease: [0.22, 1, 0.36, 1],
             }}
           >
-            {links.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-              >
-                {link.label}
-              </a>
-            ))}
+            {/* =============================================
+                MOBILE SECTION LINKS
+                ============================================= */}
 
-            <a href="#contact" onClick={() => setMenuOpen(false)}>
-              Contact
-            </a>
+            <nav aria-label="Mobile navigation">
+              {links.map((link, index) => {
+                const isActive =
+                  activeSection === link.id;
+
+                return (
+                  <motion.a
+                    key={link.id}
+                    href={link.href}
+                    className={
+                      isActive
+                        ? "mobile-nav-link-active"
+                        : undefined
+                    }
+                    aria-current={
+                      isActive ? "location" : undefined
+                    }
+                    onClick={() =>
+                      handleSectionClick(link.id)
+                    }
+                    initial={{
+                      opacity: 0,
+                      x: -10,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                    }}
+                    transition={{
+                      duration: 0.25,
+                      delay: index * 0.035,
+                    }}
+                  >
+                    <span className="mobile-nav-index">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <span>{link.label}</span>
+                  </motion.a>
+                );
+              })}
+            </nav>
 
             {/* =============================================
                 MOBILE SOCIAL LINKS
                 ============================================= */}
 
-            <div className="mobile-socials">
+            <motion.div
+              className="mobile-socials"
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              transition={{
+                duration: 0.3,
+                delay: 0.15,
+              }}
+            >
               <a
-                href="https://github.com/kroyyc"
+                href="https://github.com/k-r-o-y"
                 target="_blank"
-                rel="noreferrer"
-                aria-label="GitHub"
+                rel="noopener noreferrer"
+                aria-label="Visit Kanishka Roy on GitHub"
               >
                 <GitHubIcon size={18} />
-                GitHub
+
+                <span>GitHub</span>
               </a>
 
               <a
                 href="https://www.linkedin.com/in/kanishka-roy-64815319b"
                 target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
+                rel="noopener noreferrer"
+                aria-label="Visit Kanishka Roy on LinkedIn"
               >
                 <LinkedInIcon size={18} />
-                LinkedIn
+
+                <span>LinkedIn</span>
               </a>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -3,6 +3,14 @@
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 
+import Reveal from "@/components/ui/Reveal";
+import RevealGroup from "@/components/ui/RevealGroup";
+import RevealItem from "@/components/ui/RevealItem";
+
+/* =========================================================
+   EXPERIENCE DATA
+   ========================================================= */
+
 const experiences = [
   {
     number: "01",
@@ -72,85 +80,185 @@ const experiences = [
   },
 ];
 
+/* =========================================================
+   EXPERIENCE
+   ========================================================= */
+
 export default function Experience() {
   return (
-    <section className="experience-section" id="experience">
+    <section
+      className="experience-section"
+      id="experience"
+      aria-labelledby="experience-heading"
+    >
       <div className="section-container">
-        <motion.div
+        {/* =================================================
+            SECTION HEADING
+            ================================================= */}
+
+        <Reveal
           className="section-heading"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.35 }}
-          transition={{ duration: 0.7 }}
+          y={24}
+          duration={0.7}
         >
           <div className="section-kicker">
-            <span className="section-kicker-line" />
-            02 · EXPERIENCE
+            <span
+              className="section-kicker-line"
+              aria-hidden="true"
+            />
+
+            <span>02 · EXPERIENCE</span>
           </div>
 
           <div className="section-heading-grid">
-            <h2>
+            <h2 id="experience-heading">
               Building systems in
               <span> production.</span>
             </h2>
 
             <p>
-              Experience across AI and data platforms, CPU/GPU performance
-              engineering, and distributed production infrastructure.
+              Experience across AI and data platforms, CPU/GPU
+              performance engineering, and distributed production
+              infrastructure.
             </p>
           </div>
-        </motion.div>
+        </Reveal>
 
-        <div className="experience-list">
-          {experiences.map((experience, index) => (
-            <motion.article
+        {/* =================================================
+            EXPERIENCE TIMELINE
+            ================================================= */}
+
+        <RevealGroup
+          className="experience-list"
+          stagger={0.11}
+          delay={0.05}
+        >
+          {experiences.map((experience) => (
+            <RevealItem
               key={experience.company}
-              className="experience-item"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.16 }}
-              transition={{
-                duration: 0.7,
-                delay: index * 0.08,
-              }}
+              className="experience-item-reveal"
+              y={34}
             >
-              <div className="experience-index">
-                <span>{experience.number}</span>
-                <div className="experience-line" />
-              </div>
+              <motion.article
+                className="experience-item"
+                whileHover={{
+                  x: 4,
+                }}
+                transition={{
+                  duration: 0.22,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                {/* =========================================
+                    TIMELINE INDEX
+                    ========================================= */}
 
-              <div className="experience-company">
-                <span className="experience-type">{experience.type}</span>
+                <div
+                  className="experience-index"
+                  aria-hidden="true"
+                >
+                  <span>{experience.number}</span>
 
-                <h3>{experience.company}</h3>
-
-                <p className="experience-role">{experience.role}</p>
-
-                <p className="experience-period">{experience.period}</p>
-              </div>
-
-              <div className="experience-details">
-                <p className="experience-summary">{experience.summary}</p>
-
-                <ul>
-                  {experience.highlights.map((highlight) => (
-                    <li key={highlight}>{highlight}</li>
-                  ))}
-                </ul>
-
-                <div className="experience-technologies">
-                  {experience.technologies.map((technology) => (
-                    <span key={technology}>{technology}</span>
-                  ))}
+                  <motion.div
+                    className="experience-line"
+                    initial={{
+                      scaleY: 0,
+                      transformOrigin: "top",
+                    }}
+                    whileInView={{
+                      scaleY: 1,
+                    }}
+                    viewport={{
+                      once: true,
+                      amount: 0.2,
+                    }}
+                    transition={{
+                      duration: 0.75,
+                      delay: 0.15,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  />
                 </div>
-              </div>
 
-              <div className="experience-arrow" aria-hidden="true">
-                <ArrowUpRight size={18} strokeWidth={1.4} />
-              </div>
-            </motion.article>
+                {/* =========================================
+                    COMPANY
+                    ========================================= */}
+
+                <div className="experience-company">
+                  <span className="experience-type">
+                    {experience.type}
+                  </span>
+
+                  <h3>{experience.company}</h3>
+
+                  <p className="experience-role">
+                    {experience.role}
+                  </p>
+
+                  <p className="experience-period">
+                    {experience.period}
+                  </p>
+                </div>
+
+                {/* =========================================
+                    EXPERIENCE DETAILS
+                    ========================================= */}
+
+                <div className="experience-details">
+                  <p className="experience-summary">
+                    {experience.summary}
+                  </p>
+
+                  <ul>
+                    {experience.highlights.map((highlight) => (
+                      <li key={highlight}>
+                        {highlight}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* =======================================
+                      TECHNOLOGIES
+                      ======================================= */}
+
+                  <div
+                    className="experience-technologies"
+                    aria-label={`${experience.company} technologies`}
+                  >
+                    {experience.technologies.map(
+                      (technology) => (
+                        <span key={technology}>
+                          {technology}
+                        </span>
+                      ),
+                    )}
+                  </div>
+                </div>
+
+                {/* =========================================
+                    DECORATIVE ARROW
+                    ========================================= */}
+
+                <motion.div
+                  className="experience-arrow"
+                  aria-hidden="true"
+                  whileHover={{
+                    x: 2,
+                    y: -2,
+                  }}
+                  transition={{
+                    duration: 0.18,
+                  }}
+                >
+                  <ArrowUpRight
+                    size={18}
+                    strokeWidth={1.4}
+                  />
+                </motion.div>
+              </motion.article>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );
