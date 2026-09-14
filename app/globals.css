@@ -3516,6 +3516,75 @@ html[data-theme="light"] .circuit-line {
 }
 
 /* =========================================================
+   SELECTED WORK REVEAL WRAPPERS
+   ========================================================= */
+
+   .flagship-project-reveal {
+    width: 100%;
+  }
+  
+  .flagship-project-reveal .flagship-project {
+    width: 100%;
+  }
+  
+  .secondary-project-reveal {
+    height: 100%;
+  }
+  
+  .secondary-project-reveal .secondary-project {
+    height: 100%;
+  }
+  
+  /* Keep the secondary project copy/layout filling its card */
+  
+  .secondary-project {
+    height: 100%;
+  }
+  
+  /* Slightly enhance the active benchmark bar */
+  
+  .benchmark-bar-active {
+    position: relative;
+  }
+  
+  /* Hardware visual nodes receive a subtle live-system feel */
+  
+  .circuit-node {
+    animation: circuit-node-pulse 2.8s ease-in-out infinite;
+  }
+  
+  .node-b {
+    animation-delay: 0.35s;
+  }
+  
+  .node-c {
+    animation-delay: 0.7s;
+  }
+  
+  .node-d {
+    animation-delay: 1.05s;
+  }
+  
+  @keyframes circuit-node-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 7px rgba(109, 229, 255, 0.18);
+    }
+  
+    50% {
+      box-shadow:
+        0 0 13px rgba(109, 229, 255, 0.5),
+        0 0 22px rgba(109, 229, 255, 0.08);
+    }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .circuit-node {
+      animation: none;
+    }
+  }
+
+/* =========================================================
    RESEARCH & EDUCATION
    ========================================================= */
 
@@ -4036,6 +4105,37 @@ html[data-theme="light"] .circuit-line {
   html[data-theme="light"] .research-note {
     border-color: var(--border);
   }
+
+  /* =========================================================
+   RESEARCH / EDUCATION REVEAL WRAPPERS
+   ========================================================= */
+
+.education-item-reveal {
+  width: 100%;
+}
+
+.education-item-reveal .education-item {
+  width: 100%;
+}
+
+.research-card-reveal {
+  width: 100%;
+}
+
+.research-card-reveal .research-card {
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * Motion wrappers sit between .research-cards and
+ * .research-card. Keep them as clean structural wrappers
+ * so the card stack remains visually continuous.
+ */
+
+.research-card-reveal:last-child .research-card {
+  border-bottom: 0;
+}
   
   /* =========================================================
      RESEARCH RESPONSIVE

@@ -16,14 +16,14 @@ const education = [
     school: "School of Informatics · EPCC",
     period: "2025 — 2026",
     description:
-      "Advanced study in high-performance and data-intensive computing, combining parallel systems, scientific software, data engineering, and computational research.",
+      "Advanced study in high-performance and data-intensive computing, combining parallel systems, scientific software, numerical computing, data engineering, and computational research.",
     modules: [
       "High Performance Data Analytics",
       "MPI",
       "Threaded Programming",
       "Data Management",
       "Practical Software Development",
-      "Dissertation",
+      "Scientific Computing",
     ],
   },
   {
@@ -34,11 +34,11 @@ const education = [
     school: "Faculty of Science",
     period: "2019 — 2025",
     description:
-      "Interdisciplinary training across mathematics and computer science, with emphasis on numerical methods, probability, statistics, algorithms, modelling, and software development.",
+      "Interdisciplinary training across mathematics and computer science, with emphasis on numerical methods, probability, statistics, algorithms, modelling, machine learning, and scientific software development.",
     modules: [
       "Applied Mathematics",
       "Computer Science",
-      "Probability",
+      "Probability & Statistics",
       "Numerical Methods",
       "Algorithms",
       "Scientific Computing",
@@ -52,24 +52,39 @@ const researchAreas = [
     number: "R01",
     title: "Numerical Stability",
     description:
-      "Studying conditioning, sensitivity, precision effects, constraint preservation, and numerical failure modes in probabilistic computation.",
-    topics: ["Conditioning", "Precision", "Constraints"],
+      "Investigating conditioning, sensitivity, floating-point precision, constraint preservation, and numerical failure modes in constrained probabilistic computation.",
+    topics: [
+      "Conditioning",
+      "Sensitivity",
+      "Floating Point",
+      "Constraints",
+    ],
   },
   {
     icon: BookOpen,
     number: "R02",
-    title: "Statistical Computing",
+    title: "Statistical & Biostatistical Modelling",
     description:
-      "Computational statistics and biostatistical analysis using reproducible numerical and data-analysis workflows.",
-    topics: ["R", "Statistics", "Biostatistics"],
+      "Studied hypertension risk using multivariable logistic regression, interaction effects, model selection, diagnostics, and tree-based machine-learning models across a structured clinical dataset.",
+    topics: [
+      "Logistic Regression",
+      "Random Forest",
+      "ROC / AUC",
+      "Biostatistics",
+    ],
   },
   {
     icon: GraduationCap,
     number: "R03",
-    title: "ML, Simulation & Optimisation",
+    title: "Monte Carlo & Statistical Computing",
     description:
-      "Research involving predictive modelling, machine learning, Monte Carlo methods, simulation, and optimisation.",
-    topics: ["Machine Learning", "Monte Carlo", "Optimisation"],
+      "Investigated exact and asymptotic statistical behaviour through large-scale Monte Carlo experiments, convergence analysis, simulation, and empirical validation of theoretical results.",
+    topics: [
+      "Monte Carlo",
+      "Simulation",
+      "Convergence",
+      "Statistical Theory",
+    ],
   },
 ];
 
@@ -82,7 +97,10 @@ export default function Research() {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.35 }}
-          transition={{ duration: 0.7 }}
+          transition={{
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          }}
         >
           <div className="section-kicker">
             <span className="section-kicker-line" />
@@ -96,9 +114,9 @@ export default function Research() {
             </h2>
 
             <p>
-              Academic work grounded in applied mathematics, computer science,
-              high-performance computing, data science, and computational
-              research.
+              Academic work spanning numerical computing, statistical
+              modelling, machine learning, simulation, and high-performance
+              scientific software.
             </p>
           </div>
         </motion.div>
@@ -111,41 +129,46 @@ export default function Research() {
             </div>
 
             {education.map((item, index) => (
-              <motion.article
-                className="education-item"
+              <motion.div
+                className="education-item-reveal"
                 key={`${item.degree}-${item.institution}`}
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{
                   duration: 0.65,
                   delay: index * 0.08,
+                  ease: [0.22, 1, 0.36, 1],
                 }}
               >
-                <div className="education-top">
-                  <span>{item.number}</span>
-                  <span>{item.period}</span>
-                </div>
+                <article className="education-item">
+                  <div className="education-top">
+                    <span>{item.number}</span>
+                    <span>{item.period}</span>
+                  </div>
 
-                <h3>{item.degree}</h3>
+                  <h3>{item.degree}</h3>
 
-                <p className="education-specialization">
-                  {item.specialization}
-                </p>
+                  <p className="education-specialization">
+                    {item.specialization}
+                  </p>
 
-                <div className="education-institution">
-                  <strong>{item.institution}</strong>
-                  <span>{item.school}</span>
-                </div>
+                  <div className="education-institution">
+                    <strong>{item.institution}</strong>
+                    <span>{item.school}</span>
+                  </div>
 
-                <p className="education-description">{item.description}</p>
+                  <p className="education-description">
+                    {item.description}
+                  </p>
 
-                <div className="education-modules">
-                  {item.modules.map((module) => (
-                    <span key={module}>{module}</span>
-                  ))}
-                </div>
-              </motion.article>
+                  <div className="education-modules">
+                    {item.modules.map((module) => (
+                      <span key={module}>{module}</span>
+                    ))}
+                  </div>
+                </article>
+              </motion.div>
             ))}
           </div>
 
@@ -160,52 +183,59 @@ export default function Research() {
                 const Icon = area.icon;
 
                 return (
-                  <motion.article
-                    className="research-card"
+                  <motion.div
+                    className="research-card-reveal"
                     key={area.number}
-                    initial={{ opacity: 0, x: 24 }}
+                    initial={{ opacity: 0, x: 28 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{
                       duration: 0.65,
                       delay: index * 0.08,
+                      ease: [0.22, 1, 0.36, 1],
                     }}
                   >
-                    <div className="research-card-index">
-                      <span>{area.number}</span>
+                    <article className="research-card">
+                      <div className="research-card-index">
+                        <span>{area.number}</span>
 
-                      <div>
-                        <Icon size={17} strokeWidth={1.4} />
+                        <div>
+                          <Icon size={17} strokeWidth={1.4} />
+                        </div>
                       </div>
-                    </div>
 
-                    <h3>{area.title}</h3>
+                      <h3>{area.title}</h3>
 
-                    <p>{area.description}</p>
+                      <p>{area.description}</p>
 
-                    <div className="research-topics">
-                      {area.topics.map((topic) => (
-                        <span key={topic}>{topic}</span>
-                      ))}
-                    </div>
-                  </motion.article>
+                      <div className="research-topics">
+                        {area.topics.map((topic) => (
+                          <span key={topic}>{topic}</span>
+                        ))}
+                      </div>
+                    </article>
+                  </motion.div>
                 );
               })}
             </div>
 
             <motion.div
               className="research-note"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{
+                duration: 0.75,
+                delay: 0.18,
+                ease: [0.22, 1, 0.36, 1],
+              }}
             >
               <span className="research-note-symbol">∑</span>
 
               <p>
-                My research interests centre on computational problems where
-                mathematical structure, numerical behaviour, and software
-                implementation interact.
+                My research focuses on computational problems where
+                mathematical structure, statistical reasoning, numerical
+                behaviour, and efficient software implementation intersect.
               </p>
             </motion.div>
           </div>
