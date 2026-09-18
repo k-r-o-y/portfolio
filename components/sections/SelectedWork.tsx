@@ -2,8 +2,6 @@
 
 import { motion } from "motion/react";
 import {
-  ArrowUpRight,
-  Binary,
   CircuitBoard,
   Gauge,
 } from "lucide-react";
@@ -16,14 +14,9 @@ import RevealItem from "@/components/ui/RevealItem";
    DATA
    ========================================================= */
 
-const benchmarkBars = [
-  42, 57, 48, 71, 62, 82, 67, 91,
-  76, 58, 73, 88, 64, 79, 93, 69,
-];
-
 const projects = [
   {
-    number: "02",
+    number: "01",
     category: "ENGINEERING · TELEMETRY · ANALYSIS",
     title: "Formula Student",
     subtitle:
@@ -40,7 +33,7 @@ const projects = [
     visual: "telemetry",
   },
   {
-    number: "03",
+    number: "02",
     category: "EMBEDDED · HARDWARE / SOFTWARE",
     title: "CalgaryToSpace",
     subtitle:
@@ -57,115 +50,6 @@ const projects = [
     visual: "embedded",
   },
 ];
-
-/* =========================================================
-   DISSERTATION VISUAL
-   ========================================================= */
-
-function DissertationVisual() {
-  return (
-    <div
-      className="dissertation-visual"
-      aria-hidden="true"
-    >
-      <div className="benchmark-header">
-        <span>NUMERICAL_STABILITY.EXP</span>
-        <span>FLOAT64</span>
-      </div>
-
-      <div className="benchmark-chart">
-        {/* ===============================================
-            Y AXIS
-            =============================================== */}
-
-        <div className="chart-axis">
-          <span>1.0</span>
-          <span>0.5</span>
-          <span>0.0</span>
-        </div>
-
-        {/* ===============================================
-            BARS
-            =============================================== */}
-
-        <div className="chart-bars">
-          {benchmarkBars.map((height, index) => (
-            <motion.span
-              key={`${height}-${index}`}
-              className={
-                index === 13
-                  ? "benchmark-bar-active"
-                  : ""
-              }
-              initial={{
-                height: 0,
-                opacity: 0,
-              }}
-              whileInView={{
-                height: `${height}%`,
-                opacity: index === 13 ? 1 : 0.58,
-              }}
-              viewport={{
-                once: true,
-                amount: 0.25,
-              }}
-              transition={{
-                duration: 0.72,
-                delay: 0.12 + index * 0.035,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            />
-          ))}
-        </div>
-
-        {/* ===============================================
-            GRID
-            =============================================== */}
-
-        <motion.div
-          className="chart-grid-lines"
-          initial={{
-            opacity: 0,
-          }}
-          whileInView={{
-            opacity: 1,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.8,
-          }}
-        >
-          <span />
-          <span />
-          <span />
-          <span />
-        </motion.div>
-      </div>
-
-      <motion.div
-        className="benchmark-footer"
-        initial={{
-          opacity: 0,
-        }}
-        whileInView={{
-          opacity: 1,
-        }}
-        viewport={{
-          once: true,
-        }}
-        transition={{
-          duration: 0.6,
-          delay: 0.45,
-        }}
-      >
-        <span>REPRESENTATION / CONDITIONING</span>
-        <span>n ≈ 600</span>
-      </motion.div>
-    </div>
-  );
-}
 
 /* =========================================================
    TELEMETRY VISUAL
@@ -297,9 +181,7 @@ function EmbeddedVisual() {
       </div>
 
       <div className="circuit-stage">
-        {/* ===============================================
-            PROCESSOR
-            =============================================== */}
+        {/* Processor */}
 
         <motion.div
           className="chip"
@@ -324,9 +206,7 @@ function EmbeddedVisual() {
           <small>MCU</small>
         </motion.div>
 
-        {/* ===============================================
-            CIRCUIT NODES
-            =============================================== */}
+        {/* Circuit nodes */}
 
         {[
           "node-a",
@@ -356,9 +236,7 @@ function EmbeddedVisual() {
           />
         ))}
 
-        {/* ===============================================
-            CIRCUIT CONNECTIONS
-            =============================================== */}
+        {/* Circuit connections */}
 
         {[
           "line-a",
@@ -388,9 +266,7 @@ function EmbeddedVisual() {
           />
         ))}
 
-        {/* ===============================================
-            LABELS
-            =============================================== */}
+        {/* Labels */}
 
         <motion.span
           className="circuit-label label-a"
@@ -468,149 +344,20 @@ export default function SelectedWork() {
 
           <div className="section-heading-grid">
             <h2 id="work-heading">
-              From theory to
-              <span> engineered systems.</span>
+              From systems to
+              <span> real-world engineering.</span>
             </h2>
 
             <p>
-              Selected research and engineering work spanning
-              numerical computing, telemetry and embedded systems.
+              Selected engineering work spanning telemetry,
+              simulation, embedded computing, sensor systems,
+              and hardware-software integration.
             </p>
           </div>
         </Reveal>
 
         {/* =================================================
-            FLAGSHIP PROJECT
-            ================================================= */}
-
-        <Reveal
-          className="flagship-project-reveal"
-          y={38}
-          duration={0.8}
-          delay={0.04}
-        >
-          <motion.article
-            className="flagship-project"
-            whileHover={{
-              y: -3,
-            }}
-            transition={{
-              duration: 0.25,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-          >
-            {/* =============================================
-                PROJECT TOPLINE
-                ============================================= */}
-
-            <div className="flagship-topline">
-              <div>
-                <span className="project-number">
-                  01
-                </span>
-
-                <span className="project-category">
-                  RESEARCH · NUMERICAL COMPUTING
-                </span>
-              </div>
-
-              <Binary
-                size={19}
-                strokeWidth={1.4}
-                aria-hidden="true"
-              />
-            </div>
-
-            {/* =============================================
-                PROJECT BODY
-                ============================================= */}
-
-            <div className="flagship-grid">
-              <div className="flagship-copy">
-                <span className="flagship-label">
-                  MSc DISSERTATION · 2026
-                </span>
-
-                <h3>
-                  Investigating the Numerical Stability of
-                  Polynomial Basis Representations in
-                  Constrained Probabilistic Inference
-                </h3>
-
-                <p>
-                  A reproducible numerical study of polynomial
-                  representations under constrained probabilistic
-                  inference, examining accuracy, conditioning,
-                  sensitivity, runtime, stability and constraint
-                  preservation across controlled benchmark
-                  families.
-                </p>
-
-                <div
-                  className="flagship-tags"
-                  aria-label="Dissertation technologies"
-                >
-                  <span>Python</span>
-                  <span>NumPy</span>
-                  <span>pandas</span>
-                  <span>Numerical Analysis</span>
-                  <span>Monte Carlo</span>
-                </div>
-              </div>
-
-              <DissertationVisual />
-            </div>
-
-            {/* =============================================
-                METRICS
-                ============================================= */}
-
-            <div className="project-metrics">
-              <div>
-                <strong>≈600</strong>
-                <span>FINITE BENCHMARK RECORDS</span>
-              </div>
-
-              <div>
-                <strong>32 → 64</strong>
-                <span>PRECISION ANALYSIS</span>
-              </div>
-
-              <div>
-                <strong>04</strong>
-                <span>CORE EVALUATION AXES</span>
-              </div>
-
-              <div>
-                <strong>∞</strong>
-                <span>CONDITIONING STRESS</span>
-              </div>
-            </div>
-
-            {/* =============================================
-                PROJECT FOOTER
-                ============================================= */}
-
-            <div className="flagship-footer">
-              <span>
-                NUMERICAL STABILITY · CONDITIONING ·
-                SENSITIVITY · CONSTRAINTS
-              </span>
-
-              <div className="project-detail-hint">
-                Research case study
-
-                <ArrowUpRight
-                  size={15}
-                  aria-hidden="true"
-                />
-              </div>
-            </div>
-          </motion.article>
-        </Reveal>
-
-        {/* =================================================
-            SECONDARY PROJECTS
+            ENGINEERING PROJECTS
             ================================================= */}
 
         <RevealGroup
@@ -634,9 +381,7 @@ export default function SelectedWork() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >
-                {/* =========================================
-                    PROJECT HEADER
-                    ========================================= */}
+                {/* Project header */}
 
                 <div className="secondary-project-header">
                   <span className="project-number">
@@ -648,9 +393,7 @@ export default function SelectedWork() {
                   </span>
                 </div>
 
-                {/* =========================================
-                    VISUAL
-                    ========================================= */}
+                {/* Visual */}
 
                 {project.visual === "telemetry" ? (
                   <TelemetryVisual />
@@ -658,9 +401,7 @@ export default function SelectedWork() {
                   <EmbeddedVisual />
                 )}
 
-                {/* =========================================
-                    COPY
-                    ========================================= */}
+                {/* Copy */}
 
                 <div className="secondary-project-copy">
                   <h3>{project.title}</h3>
